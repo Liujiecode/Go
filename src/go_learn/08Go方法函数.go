@@ -1,6 +1,9 @@
 package go_learn
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type I interface {
 	Get() int
@@ -35,4 +38,55 @@ func Res08() {
 	k.Set(30)
 	fmt.Printf("%d %d\n", s.Get(), k.Get())
 	// fmt.Println(s.Age)
+}
+
+/*匿名函数：匿名函数由一个不带函数名的函数声明和函数体组成
+使用方法：1.匿名函数赋给一个变量，变量再调用
+*/
+func Res08_2() {
+	//1.匿名函数赋给一个变量，变量再调用
+	getsqrt := func(a float64) float64 {
+		return math.Sqrt(a)
+	}
+	fmt.Println(getsqrt(4))
+	//2.匿名函数自定调用，自己调用自己
+	func() {
+		for i, v := range []int{1, 2, 3, 4, 5} {
+			fmt.Println(i, v)
+		}
+	}()
+
+}
+
+/*闭包，定义一个函数返回值就是自己内部定义的匿名函数
+闭包：一个拥有许多变量和绑定了这些变量的环境的表达式（通常是一个函数），因而这些变量也是该表达式的一部分。
+闭包=函数+引用环境
+*/
+func a2() func() int {
+	i := 0
+	b := func() int {
+		i++
+		fmt.Println(i)
+		return i
+	}
+	return b
+}
+func a3() func() int {
+	i := 0
+	return func() int {
+		i++
+		fmt.Println(i)
+		return i
+	}
+}
+func Res08_03() {
+
+	c := a2()
+	c()
+	c()
+	c()
+	d := a3()
+	d()
+	d()
+	d()
 }
