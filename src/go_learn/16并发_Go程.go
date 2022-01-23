@@ -2,6 +2,7 @@ package go_learn
 
 import (
 	"fmt"
+	"runtime"
 	"time"
 )
 
@@ -57,4 +58,28 @@ func Res16() {
 		"\ntime.January:", time.January,
 		"\n50*time.Hour:", 50*time.Hour,
 		"\ntime.Hour:", time.Hour)
+}
+
+func A() {
+	for i := 0; i < 10; i++ {
+		fmt.Println("a:", i)
+	}
+	wg.Done()
+
+}
+func B() {
+	for i := 0; i < 10; i++ {
+		fmt.Println("b:", i)
+	}
+	wg.Done()
+
+}
+
+func Res16_02() {
+	runtime.GOMAXPROCS(12) //调用多少线程，本电脑六核十二线程
+	wg.Add(2)
+	go A()
+	go B()
+	wg.Wait()
+
 }
