@@ -4,18 +4,41 @@ import (
 	"fmt"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
 var x int64
-var wg sync.WaitGroup //实现并发任务的同步
 
+/*常用的控制共享资源访问的方法：
+1.原子访问（atomic包）
+2.互斥锁（sync.Mutex）
+3.等待组（sync.Wait Group）
+*/
+var wg sync.WaitGroup //定义等待组，实现并发任务的同步（计时器）
 /*互斥锁是一种常用的控制共享资源访问的方法，它能够保证同时只有一个goroutine可以访问共享资源。
 Go语言中使用sync包的Mutex类型来实现互斥锁。
 使用互斥锁能够保证同一时间有且只有一个goroutine进入临界区，其他的goroutine则在等待锁；
 当互斥锁释放后，等待的goroutine才可以获取锁进入临界区，多个goroutine同时等待一个锁时，唤醒的策略是随机的。*/
 var lock sync.Mutex     //定义互斥锁
 var rwlock sync.RWMutex //定义读写锁，非常适合读多写少的场景
+//原子操作
+var seq int64
+
+func Gen_ID() int64 { //生成10个并发序列号
+	// res := atomic.AddInt64(&seq, 1)
+	// return res  //1 3 5 7 9 11 13 15 17 19
+	return atomic.AddInt64(&seq, 1)
+
+}
+func Atomic() {
+	for i := 0; i < 10; i++ {
+		go Gen_ID()
+		fmt.Print(Gen_ID(), " ")
+
+	}
+
+}
 
 func add2() {
 	for i := 0; i < 5000; i++ {

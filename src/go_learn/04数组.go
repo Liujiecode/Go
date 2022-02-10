@@ -116,3 +116,14 @@ func Res04() {
 	fmt.Println("---切片的切片---")
 	slice_to_slice()
 }
+func Slice() {
+	slice01 := []int{}
+	for i := 0; i < 5; i++ {
+		slice01 = append(slice01, i) //切片添加元素
+	}
+	fmt.Println(slice01)
+	/*Go语言中切片删除元素的本质是：以被删除元素为分界点，将前后两个部分的内存重新连接起来。*/ //[0 1 2 3 4]
+	slice01 = append(slice01[:1], slice01[2:]...)    //切片删除指定元素
+	fmt.Println(slice01)
+
+}

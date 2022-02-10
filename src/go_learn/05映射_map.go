@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"sync"
 )
 
 /*映射将键映射到值。
@@ -85,4 +86,58 @@ func Res05() {
 	list := "你好 hha 真巧 hha hh ok okde"
 	fmt.Println(WordCount(list))
 
+}
+func Map() {
+	/* 非并发下使用map
+	   并发下使用sync.map      */
+	//将键值对保存到sync.map
+	var sc sync.Map
+	sc.Store(01, "hello")
+	sc.Store(02, "world")
+	sc.Store(03, "!")
+	sc.Store(04, "hehe")
+	//从sync.map中根据键取值
+	fmt.Println(sc.Load(01)) //hello
+	//根据键删除对应的键值对
+	sc.Delete(01)   //true
+	fmt.Println(sc) //{{0 0} {{map[2:0xc000006090] false}} map[] 0}
+	//遍历所有sc.map的键值对
+	/*sync.Map没有提供获取map数量的方法，替代方法是获取时遍历自行计算数量*/
+	var num int = 0
+	sc.Range(func(k, v interface{}) bool {
+		fmt.Println("sc: ", k, v)
+		num += 1 //统计map数量
+		return true
+
+	})
+	fmt.Println("num:", num)
+}
+
+/*反射reflect：
+reflect.Type Of()函数可以获得任意值的类型对象（reflect.Type），程序通过类型对象可以访问任意值的类型信息。
+类型（Type）和种类（Kind）的区别。编程中，使用最多的是类型，但在反射中，当需要区分一个大品种的类型时，就会用到种类（Kind）。*/
+func Reflect() {
+	var a int = 12
+	/*反射的值对象（reflect.Value）*/
+	Valueof_a := reflect.ValueOf(a)
+	fmt.Println("Valueof_a: ", Valueof_a) //反射的值对象
+
+	/*反射的类型对象（reflect.Type）*/
+	Typeof_a := reflect.TypeOf(a)      //通过reflect.TypeOf()取得变量a的类型对象Typeof_a，类型为reflect.Type()
+	fmt.Println("Typeof_a:", Typeof_a) //反射的类型对象
+	fmt.Printf("Typeof_a.Name():%v ,Typeof_a.Kind():%v\n", Typeof_a.Name(), Typeof_a.Kind())
+	/*通过Typeof_a类型对象的成员函数，可以分别获取到Typeof_a变量的类型名为int，种类（Kind）为int。*/
+	type Emm int
+	type cat struct{}
+	const Zero Emm = 0
+	Typeof_Zero := reflect.TypeOf(Zero)
+	Typeof_cat := reflect.TypeOf(cat{})
+
+	fmt.Println(Typeof_Zero.Name(), Typeof_Zero.Kind(), Typeof_cat.Name(), Typeof_cat.Kind())
+
+	/*通过反射修改变量值的前提条件之一：这个值必须可以被寻址。简单地说就是这个变量必须能被修改*/
+	value_of_a := reflect.ValueOf(&a)
+	value_of_a = value_of_a.Elem()
+	value_of_a.SetInt(1)
+	fmt.Println(value_of_a)
 }

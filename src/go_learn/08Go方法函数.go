@@ -3,6 +3,7 @@ package go_learn
 import (
 	"fmt"
 	"math"
+	"reflect"
 )
 
 type I interface {
@@ -48,7 +49,7 @@ func Res08_2() {
 	getsqrt := func(a float64) float64 {
 		return math.Sqrt(a)
 	}
-	fmt.Println(getsqrt(4))
+	fmt.Println(getsqrt(4), reflect.TypeOf(getsqrt(4)))
 	//2.匿名函数自定调用，自己调用自己
 	func() {
 		for i, v := range []int{1, 2, 3, 4, 5} {

@@ -31,6 +31,7 @@ func b1() {
 当main()函数返回的时候该goroutine就结束了，所有在main()函数中启动的goroutine会一同结束。
 */
 func Main_Goruntine() { //在程序启动时，Go程序就会为main()函数创建一个默认的goroutine
+
 	go hello() // 启动另外一个goroutine去执行hello函数
 	fmt.Println("main goroutine done!")
 	time.Sleep(time.Second) //先打印main goroutine done!是因为我们在创建新的goroutine的时候需要花费一些时间，而此时main函数所在的goroutine是继续执行
@@ -50,6 +51,8 @@ func Main_Goruntine() { //在程序启动时，Go程序就会为main()函数创�
 		fmt.Println("hello")
 	}
 	fmt.Println("----runtime.GoMaxProcs----")
+	cpu_nums := runtime.NumCPU()
+	fmt.Println("查询cpu数目：", cpu_nums)
 	/*Go语言中可以通过runtime.GOMAXPROCS()函数设置当前程序并发时占用的CPU逻辑核心数。*/
 	runtime.GOMAXPROCS(2)
 	go a1()

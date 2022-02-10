@@ -25,7 +25,6 @@ func test() {
 type IPAddr [4]byte
 
 func Res00() {
-	fmt.Println("Hello, World!")
 	/*Go语言数据类型*/
 	// bool
 
@@ -55,17 +54,16 @@ func Res00() {
 	/*查看类型*/
 	var m = 15
 	//法一：
-	fmt.Printf("m的类型为：%T\n", m)
+	fmt.Printf("m的类型为：%T\n", m) // m的类型为：int
 	//法二：import "reflect"
-	fmt.Println("m的类型为：", reflect.TypeOf(m))
+	fmt.Println("m的类型为：", reflect.TypeOf(m)) // m的类型为：int
 	/*strings.Fields()*/
 	s := "hello world hello world"
-	//str := "wo"
 	//以连续的空白字符为分隔符，将s切分成多个子串，结果中不包含空白字符本身。
 	//空白字符有：\t, \n, \v, \f, \r, ’ ‘, U+0085 (NEL), U+00A0 (NBSP) 。
 	//如果 s 中只包含空白字符，则返回一个空列表
 	index := strings.Fields(s)
-	fmt.Println(index, len(index)) //4
+	fmt.Println(index, len(index)) //[hello world hello world] 4
 	host := map[string]IPAddr{
 		"LOOKBACK": {127, 0, 0, 1},
 		"DNS":      {8, 8, 8, 8},
@@ -76,6 +74,22 @@ func Res00() {
 
 	fmt.Println(strconv.FormatBool(true))
 	fmt.Println(strconv.Atoi("s"))
+
+	//字符串转整型
+	a := "123"
+	b, _ := strconv.Atoi(a)
+	fmt.Printf("a:%v, b:%v, type(a):%T, type(b):%T\n", a, b, a, b) //a:123, b:123, type(a):string, type(b):int
+
+	//整型转字符串
+	d := 456
+	e := strconv.Itoa(d)
+	fmt.Printf("d:%v, e:%v, type(d):%T， type(e):%T\n", d, e, d, e) //d:456, e:456, type(d):int， type(e):string
+	f := string(d)
+	fmt.Sprint("d", d)
+	fmt.Println("f", f)
+	var num int = 12
+	var g float64 = float64(num)
+	fmt.Println(num, g)
 
 }
 

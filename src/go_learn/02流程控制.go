@@ -26,16 +26,17 @@ func breaks() { //多重循环需要break几次才能跳出循环
 	}
 
 }
-func goto_func() { //使用goto一次就可以
+func Goto_func() { //使用goto一次就可以
 	for x := 0; x < 3; x++ {
 		for y := 0; y < 3; y++ {
-			if y == 2 {
+			if y == 20 {
 				goto breakHere
 			}
+			fmt.Println(x, y)
 		}
 	}
 	return
-breakHere:
+breakHere: //标签若goto无法运行到这里，程序最后也会运行到这里，所以前面需要加return
 	fmt.Println("跳到这里")
 }
 
