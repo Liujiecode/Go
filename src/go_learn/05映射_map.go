@@ -119,12 +119,13 @@ reflect.Type Of()函数可以获得任意值的类型对象（reflect.Type），
 func Reflect() {
 	var a int = 12
 	/*反射的值对象（reflect.Value）*/
+	//通过reflect.valueof()获取反射值对象
 	Valueof_a := reflect.ValueOf(a)
-	fmt.Println("Valueof_a: ", Valueof_a) //反射的值对象
+	fmt.Println("Valueof_a: ", Valueof_a) //反射的值对象//12
 
 	/*反射的类型对象（reflect.Type）*/
 	Typeof_a := reflect.TypeOf(a)      //通过reflect.TypeOf()取得变量a的类型对象Typeof_a，类型为reflect.Type()
-	fmt.Println("Typeof_a:", Typeof_a) //反射的类型对象
+	fmt.Println("Typeof_a:", Typeof_a) //反射的类型对象 //int
 	fmt.Printf("Typeof_a.Name():%v ,Typeof_a.Kind():%v\n", Typeof_a.Name(), Typeof_a.Kind())
 	/*通过Typeof_a类型对象的成员函数，可以分别获取到Typeof_a变量的类型名为int，种类（Kind）为int。*/
 	type Emm int
@@ -133,7 +134,7 @@ func Reflect() {
 	Typeof_Zero := reflect.TypeOf(Zero)
 	Typeof_cat := reflect.TypeOf(cat{})
 
-	fmt.Println(Typeof_Zero.Name(), Typeof_Zero.Kind(), Typeof_cat.Name(), Typeof_cat.Kind())
+	fmt.Println(Typeof_Zero.Name(), Typeof_Zero.Kind(), Typeof_cat.Name(), Typeof_cat.Kind()) //Emm int cat struct
 
 	/*通过反射修改变量值的前提条件之一：这个值必须可以被寻址。简单地说就是这个变量必须能被修改*/
 	value_of_a := reflect.ValueOf(&a)

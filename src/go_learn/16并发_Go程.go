@@ -83,3 +83,51 @@ func Res16_02() {
 	wg.Wait()
 
 }
+
+/*失控的Goroutinue:运行的goroutinue一直没有退出，会无限增加*/
+func consumer(ch chan int) {
+	for {
+		data := <-ch
+		fmt.Println("data:", data)
+	}
+
+}
+func Goroutinue_error() {
+	ch := make(chan int)
+	for {
+		var dummy string
+		fmt.Scan(&dummy)
+		go consumer(ch)
+		fmt.Println("运行的协程数量：", runtime.NumGoroutine())
+	}
+
+}
+
+/*改进：*/
+func consumer2(ch chan int) {
+	for {
+		data := <-ch
+		if data == 0 {
+			break
+		}
+		fmt.Println("data:", data)
+	}
+	fmt.Println("Goroutinue Exit !")
+
+}
+func Goroutinue_error2() {
+	ch := make(chan int)
+	for {
+		var dummy string
+		fmt.Scan(&dummy)
+		if dummy == "quit" { //手动输入quit，退出不需要的goroutinue
+			for i := 0; i < runtime.NumGoroutine()-1; i++ {
+				ch <- 0
+			}
+			continue //如果连续两次quit，不加continue就会报错，continue相当于结束本次开始下一次.
+		}
+		go consumer2(ch)
+		fmt.Println("运行的协程数量：", runtime.NumGoroutine())
+	}
+
+}

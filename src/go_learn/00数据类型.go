@@ -84,9 +84,6 @@ func Res00() {
 	d := 456
 	e := strconv.Itoa(d)
 	fmt.Printf("d:%v, e:%v, type(d):%T， type(e):%T\n", d, e, d, e) //d:456, e:456, type(d):int， type(e):string
-	f := string(d)
-	fmt.Sprint("d", d)
-	fmt.Println("f", f)
 	var num int = 12
 	var g float64 = float64(num)
 	fmt.Println(num, g)

@@ -1,0 +1,18 @@
+<h1 style="color: red;">你好 Go</h1>
+
+<img id="img" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F032120114622%2F200321114622-4-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647154791&t=aa24b76e76d41e57b2c81903afc93641" weight="100px" height="100px"/>
+<button id="b">点我啊</button>
+<script>
+    var num  
+    document.getElementById("b").onclick=function(){  
+        if (num){
+        document.getElementById("img").src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F031H0111515%2F20031G11515-9-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647154791&t=92cd9e140186cd70d4d3c12a63e4c983"
+        num=false
+        console.log(num)
+    }else{
+        document.getElementById("img").src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F0F220092145%2F200F2092145-4-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647156197&t=a66155699949790d320e042b693de3d0"
+    num=true
+    console.log(num)
+        }    
+    }
+</script>

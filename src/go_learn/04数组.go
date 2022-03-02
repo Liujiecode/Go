@@ -2,6 +2,7 @@ package go_learn
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -18,6 +19,8 @@ func slice_len_cap() {
 		fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 	}
 	s := []int{2, 3, 5, 7, 11, 13}
+	sort.Ints(s) //升序排序
+
 	print_len_cap(s)
 
 	// 截取切片使其长度为 0

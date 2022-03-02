@@ -24,8 +24,13 @@ var Db *sqlx.DB
 
 func init() {
 	database, err := sqlx.Open("mysql", "root:root@tcp(127.0.0.1:3306)/test01?charset=utf8mb4")
-	if err != nil {
+	if err != nil { //上面链接格式不对才会报错！
 		fmt.Println("open mysql failed,", err)
+		return
+	}
+	err = database.Ping() //链接数据库，检验账号密码是否正确
+	if err != nil {
+		fmt.Println("密码错误！")
 		return
 	}
 	Db = database
@@ -37,12 +42,12 @@ func main() {
 	defer Db.Close()
 	/*插入*/
 	// r, err_insert := Db.Exec("insert into person(userid , username, sex, email)values(? ,?, ?, ?)", 12, "stu008", "女", "stu08@qq.com")
-	r, err_insert := Db.Exec("insert into student(class_id , name)values(?, ?)", 1, "stu008")
+	r, err_insert := Db.Exec("insert into student(class_id , name)values(?, ?)", 3, "stu008")
 	if err_insert != nil {
 		fmt.Println("insert failed, ", err_insert)
 		return
 	}
-	fmt.Println("r:", r)
+	// fmt.Println("r:", r)
 	id, err := r.LastInsertId()
 	if err != nil {
 		fmt.Println("exec failed, ", err)
