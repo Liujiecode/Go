@@ -1,7 +1,6 @@
 package leetcode
 
 import (
-	"container/list"
 	"fmt"
 )
 
@@ -14,7 +13,7 @@ func Bubble_Sort(array []int) []int {
 	n := len(array)
 	for i := 0; i < n-1; i++ { //n个数，排序n-1趟就可以
 		for j := 0; j < n-i-1; j++ { //比较j与j+1，所以j+1<n，i趟后，可以j+1<n-i
-			if array[j] >= array[j+1] { //执行一趟，最大的数到最后
+			if array[j] > array[j+1] { //执行一趟，最大的数到最后
 				array[j], array[j+1] = array[j+1], array[j]
 			}
 		}
@@ -28,7 +27,7 @@ func Bubble_Sort2(array []int) []int {
 	n := len(array)
 	for i := 0; i < n-1; i++ {
 		flag := false
-		for j := 0; j < n-i-1; j++ {
+		for j := 0; j < n-i-1; j++ { //-i是因为一趟排好一个数，不需要再次遍历到n-1
 			if array[j] >= array[j+1] {
 				array[j], array[j+1] = array[j+1], array[j]
 				flag = true //某一趟，所有数都没变化，直接退出
@@ -75,6 +74,7 @@ func parttion(array []int, l, r int) int { //array := []int{2, 3, 1, 4, 0, 6, 7}
 //优化
 func Quick_Sort2(array []int, l, r int) {
 	for l < r {
+		fmt.Println("快速排序优化：", array)
 		i := parttion(array, l, r)
 		if i-1 < r-1 {
 			Quick_Sort2(array, l, i-1)
@@ -85,14 +85,14 @@ func Quick_Sort2(array []int, l, r int) {
 		}
 
 	}
-	fmt.Println("快速排序优化：", array)
 }
 
+/*go写法，递归*/
 func QuickSort(data []int) {
 	if len(data) <= 1 {
 		return
 	}
-	base := data[0]
+	base := data[0] //第一个元素当基准
 	l, r := 0, len(data)-1
 	for i := 1; i <= r; {
 		if data[i] > base {
@@ -104,7 +104,7 @@ func QuickSort(data []int) {
 			i++
 		}
 	}
-	QuickSort(data[:l])
+	QuickSort(data[:l]) //data[l]就是基准的位置
 	QuickSort(data[l+1:])
 }
 
@@ -113,13 +113,13 @@ a.插入排序第一个位置固定，故从第二个位置开始遍历
 b.记录当前位置为Current,,从大到小遍历当前位置到0的值，倘若，前一个数大于后一个数，将前一个数赋值给后一个（因为最前面的数赋值给current）
 因为从大到小遍历，j需要先运算再自减。遍历结束，循环退出。j会比0还小，为-1（当i的值最小使），将current的值给j，前面就排序完毕。*/
 func Insert_Sort(array []int) []int { //array := []int{2, 3, 1, 4, 0, 6, 7}
-	var i, j, current int //j=0,经过循环不做运算递增一次
 	// 将数组的第一个元素当作已经排好序的，从第二个元素，即 i 从 1 开始遍历数组
-	for i = 1; i < len(array); i++ {
+	for i := 1; i < len(array); i++ {
 		// 外围循环开始，把当前 i 指向的值用 current 保存
-		current = array[i]
+		current := array[i]
 		// 指针 j 内循环，和 current 值比较，若 j 所指向的值比 current 值大，则该数右移一位
-		for j = i - 1; j >= 0 && array[j] > current; j-- {
+		j := i - 1
+		for ; j >= 0 && array[j] > current; j-- {
 			array[j+1] = array[j]
 			// fmt.Printf("j+1:%d  j:%d\n", j+1, j)
 		}
@@ -144,12 +144,15 @@ func Shell_Sort(array []int) []int { //array := []int{2, 3, 1, 4, 0, 6, 7, 5}
 			for j := i + increment; j < len(array); j += increment {
 				temp := array[j]
 				k := j - increment
-				for ; k >= 0; k -= increment {
-					if array[k] > temp {
-						array[k+increment] = array[k]
-						continue
-					}
-					break
+				// for ; k >= 0; k -= increment {
+				// 	if array[k] > temp {
+				// 		array[k+increment] = array[k]
+				// 		continue
+				// 	}
+				// 	break
+				// }
+				for ; k >= 0 && array[k] > temp; k -= increment {
+					array[k+increment] = array[k]
 				}
 				array[k+increment] = temp
 			}
@@ -188,56 +191,147 @@ b.设定两个指针，最初位置分别为两个已经排序序列的起始位
 c.比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；
 d.重复步骤 3 直到某一指针达到序列尾；
 e.将另一序列剩下的所有元素直接复制到合并序列尾。*/
+// func reversePairs(nums []int) int {
+//     n:=len(nums)
+//     temp:=[]int{}
+//     var res int
+//     for i:=0;i<n;i++{
+//         num:=0
+//         if i>0 && nums[i]>=nums[i-1] && len(temp)>0{
+//             temp=append(temp,temp[len(temp)-1])
+//             continue
+//         }
+//         for j:=i+1;j<n;j++{
+//             if nums[i]>nums[j]{
+//                 num+=1
+//             }
+//         }
+//         if num>0 && len(temp)==0{
+//         temp=append(temp,num)
+//         }else if len(temp)>0{
+//         temp=append(temp,num)
+//         }
 
-func Calculate(s string) int {
-	res, _ := helper(s, 0)
-	return res
-}
-func Isdigit(b byte) bool {
-	return b >= '0' && b <= '9'
-}
-func helper(s string, start int) (int, int) {
-	i, stack, res, sign, num := start, list.New(), 0, '+', 0
-	for i < len(s) {
-		if Isdigit(s[i]) {
-			num = 10*num + int(s[i]-'0')
-		}
+//     }
+//     for i:=0;i<len(temp);i++{
+//         res+=temp[i]
+//     }
+//     return res
+// }
 
-		if s[i] == '(' {
-			num, i = helper(s, i+1)
-		}
-		//s[i]是个运算符
-		if len(s) > i && !Isdigit(s[i]) && s[i] != ' ' && s[i] != '(' || len(s) == i+1 {
-			switch sign {
-			case '+':
-				stack.PushBack(num)
-			case '-':
-				stack.PushBack(-num)
-			case '*':
-				stack.Back().Value = stack.Back().Value.(int) * num
-			case '/':
-				stack.Back().Value = int(stack.Back().Value.(int) / num)
-			}
-			num = 0
-			sign = rune(s[i])
-
-		}
-		i++
-		if i < len(s) && s[i] == ')' {
-			if sign == '+' {
-				stack.PushBack(num)
-			} else {
-				stack.PushBack(-num)
-			}
-			break
-		}
-
+func MergeSort1(nums []int, start, end int) int {
+	if start >= end {
+		return 0
 	}
-	//求和
-	cur := stack.Front()
-	for cur != nil {
-		res += cur.Value.(int)
-		cur = cur.Next()
+	mid := start + (end-start)/2
+	cnt := MergeSort1(nums, start, mid) + MergeSort1(nums, mid+1, end)
+	tmp := []int{}
+	i, j := start, mid+1
+	for i <= mid && j <= end {
+		if nums[i] <= nums[j] {
+			tmp = append(tmp, nums[i])
+			cnt += j - (mid + 1)
+			i++
+		} else {
+			tmp = append(tmp, nums[j])
+			j++
+		}
 	}
-	return res, i
+	for ; i <= mid; i++ {
+		tmp = append(tmp, nums[i])
+		cnt += end - (mid + 1) + 1
+	}
+	for ; j <= end; j++ {
+		tmp = append(tmp, nums[j])
+	}
+	for i := start; i <= end; i++ {
+		nums[i] = tmp[i-start]
+	}
+	return cnt
 }
+func SortArray(nums []int) []int {
+	mergeSort2(nums, 0, len(nums)-1)
+	return nums
+}
+func mergeSort2(arr []int, left, right int) {
+	if left < right {
+		mid := left + (right-left)>>1
+		mergeSort2(arr, left, mid)
+		mergeSort2(arr, mid+1, right)
+		merge(arr, left, mid, right)
+	}
+}
+
+//归并
+func merge(arr []int, left, mid, right int) {
+	//第一步，定义一个新的临时数组
+	temparr := make([]int, right-left+1)
+	// temparr:=[]int{}
+	temp1, temp2 := left, mid+1
+	index := 0
+	//对应第二步，比较每个指针指向的值，小的存入大集合
+	for temp1 <= mid && temp2 <= right {
+		if arr[temp1] <= arr[temp2] {
+			temparr[index] = arr[temp1]
+			index += 1
+			temp1++
+		} else {
+			temparr[index] = arr[temp2]
+			index++
+			temp2++
+		}
+	}
+	//对应第三步，将某一小集合的剩余元素存到大集合中
+	if temp1 <= mid {
+		temparr = append(temparr[index:index+mid-temp1+1], arr[temp1:temp1+mid-temp1+1]...)
+		// temparr[index : index+mid-temp1+1] = arr[temp1 : temp1+mid-temp1+1]
+	}
+	if temp2 <= right {
+		temparr = append(temparr[index:index+right-temp2+1], arr[temp2:temp2+right-temp2+1]...)
+		// temparr[index : index+right-temp2+1] = arr[temp2 : temp2+right-temp2+1]
+	}
+	//将大集合的元素复制回原数组
+	arr = append(arr[left:left+right-left+1], temparr[0:right-left+1]...)
+}
+
+/*7.计数排序*/
+func CountSort(nums []int) []int {
+	n := len(nums)
+	if n < 1 {
+		return nums
+	}
+	//求出最大最小值
+	max, min := nums[0], nums[0]
+	for _, x := range nums {
+		if max < x {
+			max = x
+		}
+		if min > x {
+			min = x
+		}
+	}
+	//设置 presum 数组长度,然后求出我们的前缀和数组，
+	//这里我们可以把求次数数组和前缀和数组用一个数组处理
+	presum := make([]int, max-min+1)
+	for _, x := range nums {
+		presum[x-min] += 1
+	}
+	for i := 1; i < len(presum); i++ {
+		presum[i] = presum[i-1] + presum[i]
+	}
+	//临时数组
+	temp := make([]int, n)
+	//遍历数组，开始排序,注意偏移量
+	for i := n - 1; i >= 0; i-- {
+		//查找 presum 字典，然后将其放到临时数组，注意偏移度
+		index := presum[nums[i]-min] - 1
+		temp[index] = nums[i]
+		//相应位置减一
+		presum[nums[i]-min] -= 1
+	}
+	//copy回原数组
+	copy(nums, temp)
+	return nums
+}
+
+/*8.堆排序*/

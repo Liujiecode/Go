@@ -59,6 +59,7 @@ func Res05() {
 		"test05": {40, 52},
 	}
 	fmt.Println(m["Bell Labs"], m["test02"], m, n)
+
 	//映射修改
 	/*在映射 p 中插入或修改元素：
 	  p[key] = elem

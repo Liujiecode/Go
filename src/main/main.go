@@ -19,10 +19,156 @@ func main() {
 	// pushed := []int{1, 2, 3, 4, 5}
 	// poped := []int{4, 5, 3, 2, 1}
 	// validateStackSequences(pushed, poped)
-	dailyTemperatures([]int{73, 74, 75, 71, 69, 72, 76, 73})
-	//           [1, 1, 4,  2, 1,  1,  0, 0]
+	// leetcode.Insert_Sort([]int{6, 5, 4, 1, 3, 2})
+	// arr := []int{6, 1, 4, 2, 3, 7}
+	// fmt.Println(arr)
+	// // leetcode.Quick_Sort2(arr, 0, 5)
+	// // leetcode.Shell_Sort(arr)
+	// // leetcode.QuickSort(arr)
+	// // leetcode.CountSort(arr)
+	// leetcode.SortArray(arr)
+	// fmt.Println(arr)
+	// str := "10"
+	// str2 := 101
+	// va, _ := strconv.ParseInt(str, 10, 16)
+	// fmt.Println(va)
+	// fmt.Printf("%T\n", va)
+	// str3 := strconv.FormatInt(int64(str2), 2)
+	// fmt.Printf("%v%T\n", str3, str3)
+	// var a byte = '1'
+	// b := 'A'
+	// c := 'a'
+	// d := int(a) - 10
+	// fmt.Println(a, b, c)
+	// fmt.Println(d)
+	// s := fmt.Sprintf("%d", 10)
+	// fmt.Println(s)
+	// old := "heello"
+	// new := strings.Replace(old, "e", "11e", -1)
+	// new1 := strings.Replace(old, "e", "11e", -2)
+	// new2 := strings.Replace(old, "e", "11e", 1)
+	// fmt.Println(new, new1, new2)
+	// // leetcode.CombinationSum([]int{1, 2, 3, 6, 7}, 8)
+	// list1 := []int{}
+	// list2 := make([]int, 5)
+	// var list3 []int
+	// fmt.Printf("%#v,%#v, %#v", list1, list2, list3)
+	// fmt.Printf("%#v,%#v ,%#v ", len(list1), len(list2), len(list3))
+
+	// a := reflect.DeepEqual([]int{1, 2}, []int{1, 2})
+	// fmt.Println(a)
+
+	// nums := [][]int{{1, 2}, {2, 3}, {2, 3}, {3, 2}, {3, 4}}
+	// for i := 0; i < len(nums); i++ {
+	// 	for j := i + 1; j < len(nums); j++ {
+	// 		if reflect.DeepEqual(nums[i], nums[j]) {
+	// 			fmt.Println("true")
+
+	// 		} else {
+	// 			fmt.Println("false")
+	// 		}
+
+	// 	}
+	// }
+	// reversePairs([]int{2, 4, 3, 5, 1})
+	// leetcode.MergeSort1([]int{7, 6, 5, 2, 3, 8, 4}, 0, 6)
+	// merge([]int{1, 2, 3, 0, 0, 0}, 3, []int{2, 5, 6}, 3)
+	nums := []int{2, 0, 2, 1, 1, 0}
+	p0, p1 := 0, 0
+	for i := 0; i < len(nums); i++ {
+		if nums[i] == 0 {
+			nums[p0], nums[i] = nums[i], nums[p0]
+			if p0 < p1 {
+				nums[i], nums[p1] = nums[p1], nums[i]
+			}
+			p1++
+			p0++
+		} else if nums[i] == 1 {
+			nums[p1], nums[i] = nums[i], nums[p1]
+			p1++
+		}
+	}
 
 }
+
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	/*copy+sort*/
+	// nums1=append(nums1[:m],nums2...)
+	// sort.Ints(nums1)
+	/*双指针:从前往后*/
+	// res:=make([]int,0,m+n)
+	// res:=[]int{}
+	// p,q:=0,0
+	// for{
+	//     if p==m{
+	//         res=append(res,nums2[q:]...)
+	//         break
+	//     }
+	//     if q==n{
+	//         res=append(res,nums1[p:]...)
+	//         break
+	//     }
+	//     if nums1[p]<=nums2[q]{
+	//         res=append(res,nums1[p])
+	//         p++
+	//     }else {
+	//         res=append(res,nums2[q])
+	//         q++
+	//     }
+	// }
+	// copy(nums1,res)
+	/*双指针：从后往前*/
+	l, r, res := m-1, n-1, m+n-1
+	for {
+		if l < 0 {
+			nums1 = append(nums2[:r], nums1[res:]...)
+			break
+		}
+		if r < 0 {
+			nums1 = append(nums1[:l], nums1[res:]...)
+			break
+		}
+		if nums1[l] >= nums1[r] {
+			nums1[res] = nums1[l]
+			res--
+			l--
+		} else {
+			nums1[res] = nums2[r]
+			res--
+			r--
+		}
+	}
+
+}
+
+func reversePairs(nums []int) int {
+	n := len(nums)
+	temp := []int{}
+	var res int
+	for i := 0; i < n; i++ {
+		num := 0
+		if i > 0 && nums[i] >= nums[i-1] && len(temp) > 0 {
+			temp = append(temp, temp[len(temp)-1])
+			continue
+		}
+		for j := i + 1; j < n; j++ {
+			if nums[i] > nums[j] {
+				num += 1
+			}
+		}
+		if num == 0 {
+			continue
+		} else {
+			temp = append(temp, num)
+		}
+
+	}
+	for i := 0; i < len(temp); i++ {
+		res += temp[i]
+	}
+	return res
+}
+
 func dailyTemperatures(temperatures []int) {
 	n := len(temperatures)
 	res := make([]int, n)
