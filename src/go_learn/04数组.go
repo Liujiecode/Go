@@ -130,3 +130,13 @@ func Slice() {
 	fmt.Println(slice01)
 
 }
+func Array_test04() {
+	//数组取地址
+	sliceasdas := []int{1, 2, 3}
+	fmt.Printf("%p  %p  %p\n", sliceasdas, &sliceasdas[0], &sliceasdas[1])
+	fmt.Printf("%p  %p  %p\n", &sliceasdas, &sliceasdas[0], &sliceasdas[1])
+	fmt.Printf("%p  %p  %p  %p\n", &sliceasdas, &sliceasdas[0], &sliceasdas[1], *&sliceasdas)
+	// 0xc0000ae090  0xc0000ae090  0xc0000ae098
+	// 0xc000096060  0xc0000ae090  0xc0000ae098
+	// 0xc000096060  0xc0000ae090  0xc0000ae098  0xc0000ae090
+}

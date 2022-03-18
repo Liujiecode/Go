@@ -45,46 +45,81 @@ func Bubble_Sort2(array []int) []int {
 a.从数列中挑出一个元素，称为 “基准”（pivot）;
 b.重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
 c.递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；*/
-func Quick_Sort(array []int, l, r int) {
-	if l >= r {
-		fmt.Println("result:", array[l])
-		return
-	}
-	i := parttion(array, l, r)
-	Quick_Sort(array, 1, i-1)
-	Quick_Sort(array, i+1, r)
+// 两种方式：一、挖坑 二、交换
+/* 一、挖坑（记录第一个数大小，第一位参与后面的复制）
+记录第一个数的值pivot，然后从后往前<—high，从前往后low—>，记录第一个小于基准的数，放在首位low。大于基准的数，放在high位置
+然后将 low对应的值与pivot对应的数交换
+*/
+//array={4,2,5,3,6,7,1}
+func Solve() []int {
+	array := []int{4, 2, 5, 3, 6, 7, 1}
+	Quick_Sort(array, 0, len(array)-1)
+	fmt.Println(array)
+	return array
 }
-func parttion(array []int, l, r int) int { //array := []int{2, 3, 1, 4, 0, 6, 7}
-	i, j := l, r //array := []int{2, 3, 5,1, 4, 0, 6, 7}
-	for i < j {
-		for i < j && array[j] >= array[l] { //从右向左与2比较，>2，比较前一个数
-			j -= 1
-		}
-		for i < j && array[i] <= array[l] { //从左向右与2比较，<2，比较后一个数
-			i += 1
-		}
-		array[i], array[j] = array[j], array[i] //交换[1],[4]
-		// fmt.Println("for内部i,j:", i, j)
+func Quick_Sort(array []int, low, high int) {
+	if low < high {
+		index := parttion(array, low, high)
+		Quick_Sort(array, low, index-1)
+		Quick_Sort(array, index+1, high)
 	}
-	array[l], array[i] = array[i], array[l] //交换[0]与[2]
-	// fmt.Println("for外部l,i:", l, i)
-	return i
+}
+func parttion(array []int, low, high int) int {
+	pivot := array[low]
+	for low < high {
+		for low < high && array[high] >= pivot {
+			high--
+		}
+		if low < high {
+			array[low] = array[high]
+		}
+		for low < high && array[low] <= pivot {
+			low++
+		}
+		if low < high {
+			array[high] = array[low]
+		}
+	}
+	array[low] = pivot
+	return low
 }
 
-//优化
-func Quick_Sort2(array []int, l, r int) {
-	for l < r {
-		fmt.Println("快速排序优化：", array)
-		i := parttion(array, l, r)
-		if i-1 < r-1 {
-			Quick_Sort2(array, l, i-1)
-			l = i + 1
-		} else {
-			Quick_Sort2(array, i+1, r)
-			r = i - 1
+/* 二、交换（记录第一个数大小，下标，从第二个数开始交换，最后交换第一个数与low）
+记录第一个数下标start0，记录第一个数pivot（基准），从后往前<—high，从前往后low—>，记录第一个小于基准和大于基准的数，交换大于基准和小于基准的一组数
+然后将 low对应的值与start对应的数交换
+*/
+func Solve2() []int {
+	array := []int{4, 2, 5, 3, 6, 7, 1}
+	Quick_Sort2(array, 0, len(array)-1)
+	fmt.Println(array)
+	return array
+
+}
+func Quick_Sort2(array []int, low, high int) {
+	if low < high {
+		index := parttion2(array, low, high)
+		Quick_Sort2(array, low, index-1)
+		Quick_Sort2(array, index+1, high)
+	}
+}
+func parttion2(array []int, low, high int) int {
+	pivot := array[low]
+	start := low     //记录第一个数下标
+	for low < high { //一定要先走大后走小
+		for low < high && array[high] >= pivot {
+			high--
+		}
+		for low < high && array[low] <= pivot {
+			low++
 		}
 
+		if low < high {
+			array[high], array[low] = array[low], array[high] //交换<pivot和>pivot的数
+		}
 	}
+	array[low], array[start] = array[start], array[low]
+	return low
+
 }
 
 /*go写法，递归*/
@@ -94,16 +129,31 @@ func QuickSort(data []int) {
 	}
 	base := data[0] //第一个元素当基准
 	l, r := 0, len(data)-1
-	for i := 1; i <= r; {
-		if data[i] > base {
-			data[i], data[r] = data[r], data[i]
+	// for i := 1; i <= r; {
+	// 	if data[i] > base {
+	// 		data[i], data[r] = data[r], data[i]
+	// 		r--
+	// 	} else {
+	// 		data[i], data[l] = data[l], data[i]
+	// 		l++
+	// 		i++
+	// 	}
+	// }
+	for l < r {
+		for l < r && data[r] >= base {
 			r--
-		} else {
-			data[i], data[l] = data[l], data[i]
+		}
+		if l < r {
+			data[l] = data[r]
+		}
+		for l < r && data[l] <= base {
 			l++
-			i++
+		}
+		if l < r {
+			data[r] = data[l]
 		}
 	}
+	data[l] = base
 	QuickSort(data[:l]) //data[l]就是基准的位置
 	QuickSort(data[l+1:])
 }
