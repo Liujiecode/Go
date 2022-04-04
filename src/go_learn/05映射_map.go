@@ -15,6 +15,10 @@ make 函数会返回给定类型的映射，并将其初始化备用。*/
 type Vertex1 struct {
 	Lat, Long float32
 }
+type student struct {
+	Name string
+	Age  int
+}
 
 //若顶级类型只是一个类型名，你可以在文法的元素中省略它。
 /*练习：实现WordCount。它应当返回一个映射，其中包含字符串s中每个“单词”的个数。函数wc.Test会对此函数执行一系列测试用例，并输出成功还是失败。*/
@@ -86,6 +90,28 @@ func Res05() {
 		"从映射读取不存在的值、值的类型：", p["01"], reflect.TypeOf(p["01"]), "映射:", p)
 	list := "你好 hha 真巧 hha hh ok okde"
 	fmt.Println(WordCount(list))
+
+	m1 := make(map[string]*student)
+	n1 := make(map[string]student)
+	stus := []student{
+		{Name: "zhou", Age: 24},
+		{Name: "li", Age: 23},
+		{Name: "wang", Age: 22},
+	}
+	// for _, stu := range stus {
+	// 	m[stu.Name] = &stu
+	// }
+	for i := 0; i < len(stus); i++ {
+		m1[stus[i].Name] = &stus[i]
+	}
+	for i := 0; i < len(stus); i++ {
+		n1[stus[i].Name] = stus[i]
+	}
+	for k, v := range m1 {
+		println(k, "=>", v.Name, v.Age)
+	}
+	fmt.Println(m1)
+	fmt.Println(n1)
 
 }
 func Map() {

@@ -33,3 +33,21 @@ func Res01_2() {
 		fmt.Printf("%v:(%c) ", res1[j], res1[j])
 	}
 }
+func Str_learn() {
+	/*获取相邻ab的位置*/
+	str := "sabcdba"
+	start := 0
+	var num byte
+	for i := 0; i < len(str); i++ {
+		num += str[i]
+		if num >= 195 {
+			num_len := i - start + 1
+			if num == 195 && str[start] < str[i] {
+				fmt.Println(start, i, num, num_len, str[start:i+1])
+			}
+
+			num -= str[start]
+			start++
+		}
+	}
+}

@@ -90,6 +90,11 @@
   </footer>
   <div class="backdrop"></div>
 
+<form enctype="multipart/form-data" method="post" >
+<input type="file" name="uploadname" />
+<input type="submit">
+</form>
+
   <script src="/static/js/reload.min.js"></script>
 </body>
 </html>
