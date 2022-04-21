@@ -1,28 +1,52 @@
 package main
 
 import (
-	"go_learn"
-	"leetcode"
+	"fmt"
+	"sort"
 )
 
 func main() {
-	// list := []int{3, 2, 1, 0, 4}
-	// str := [][3]byte{{'a', 'b', 'c'}, {'1', '0', '2'}}
-	// str2 := [][]int{}
-	// fmt.Println(list, str, str2)
-	// var list2 []int
-	// list2 = append(list2, 1)
-	// fmt.Println(list2)
-	// var c Hello
-	// fmt.Println(unsafe.Sizeof(c))
-	// fmt.Println(unsafe.Sizeof(struct{}{}))
-	// fmt.Println(&str[0][0], &str[0][1], &str[0][2], &str[1][0], &str[1][1], &str[1][2])
-	go_learn.Str_learn()
-	leetcode.ListNode_Solve()
+	// go_learn.Str_Test()
+	// leetcode.Tree_Solve()
+	// go_learn.Select_solve()
+	num := []int{0, 1}
+	//无限循环
+	// for i := 0; i < len(num); i++ {
+	// 	num = append(num, i+1)
+	// }
+	for i := range num {
+		num = append(num, i+1)
+	}
+	fmt.Println(num)
 
 }
+func topKFrequent(nums []int, k int) []int {
+	sort.Ints(nums)
+	hash := make(map[int]int)
+	count := 0
+	x_list := []int{}
+	y_list := []int{}
+	for _, v := range nums {
+		if c, ok := hash[v]; c > 0 && ok {
+			hash[v] += 1
+		} else {
+			hash[v] = 1
+			count += 1
+		}
+	}
+	for x, y := range hash {
+		x_list = append(x_list, x)
+		y_list = append(y_list, y)
+	}
+	for i := 0; i < count-k; i++ {
+		for j := 0; j < count-1; j++ {
+			if y_list[j] > y_list[j+1] {
+				y_list[j], y_list[j+1] = y_list[j+1], y_list[j]
+				x_list[j], x_list[j+1] = x_list[j+1], x_list[j]
+			}
+		}
+	}
+	fmt.Println(x_list[count-k:])
+	return x_list[count-k:]
 
-type Hello struct {
-	a int32
-	b int32
 }

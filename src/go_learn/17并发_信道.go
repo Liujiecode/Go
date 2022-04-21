@@ -2,6 +2,7 @@ package go_learn
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -140,5 +141,87 @@ func Main_Select() {
 	for s := range output3 {
 		fmt.Println("res:", s)
 		time.Sleep(time.Second)
+	}
+}
+func Chan_Solve() {
+	start := time.Now()
+
+	apis := []string{
+		"https://management.azure.com",
+		"https://dev.azure.com",
+		"https://api.github.com",
+		"https://outlook.office.com/",
+		"https://api.somewhereintheinternet.com/",
+		"https://graph.microsoft.com",
+	}
+	/*有缓冲channel将发送和接收操作解耦。它们不会阻止程序，但你必须小心使用，因为可能最终会导致死锁。
+	如果试图使用一个 channel 在一个仅用于接收数据的 channel 中发送数据，将会出现编译错误。*/
+	ch := make(chan string, 2) //2,6,10都行
+	for _, api := range apis {
+		go checkAPI(api, ch)
+	}
+
+	for i := 0; i < len(apis); i++ {
+		fmt.Print(<-ch)
+	}
+
+	/*  遍历执行  耗时6s
+	for _, api := range apis {
+		_, err := http.Get(api)
+		if err != nil {
+			fmt.Printf("ERROR: %s is down!\n", api)
+			continue
+		}
+
+		fmt.Printf("SUCCESS: %s is up and running!\n", api)
+	}*/
+	/*无缓冲channel 耗时2s
+	无缓冲channel同步通信。它们保证每次发送数据时，程序都会被阻止，直到有人从channel中读取数据。*/
+	/*
+		ch := make(chan string)
+		for _, api := range apis {
+			go checkAPI(api, ch)
+		}
+		for i := 0; i < len(apis); i++ {
+			fmt.Print(<-ch)
+		}*/
+
+	elapsed := time.Since(start)
+	fmt.Printf("Done! It took %v seconds!\n", elapsed.Seconds())
+
+}
+func send(ch chan string, message string) {
+	ch <- message
+}
+func checkAPI(api string, ch chan string) {
+	_, err := http.Get(api)
+	if err != nil {
+		ch <- fmt.Sprintf("ERROR: %s is down!\n", api)
+		return
+	}
+
+	ch <- fmt.Sprintf("SUCCESS: %s is up and running!\n", api)
+}
+
+func Select_solve() {
+	chanCap := 5
+	ch7 := make(chan int, chanCap)
+
+	for i := 0; i < chanCap; i++ {
+		select {
+		case ch7 <- 1:
+			fmt.Println("11111")
+		case ch7 <- 2:
+			fmt.Println("22222")
+		case ch7 <- 3:
+			fmt.Println("33333")
+
+		default:
+			fmt.Println("nonononmo")
+		}
+	}
+
+	for i := 0; i < chanCap; i++ {
+		fmt.Printf("%v\n", <-ch7)
 	}
 }

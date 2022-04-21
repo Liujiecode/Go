@@ -140,3 +140,15 @@ func Array_test04() {
 	// 0xc000096060  0xc0000ae090  0xc0000ae098
 	// 0xc000096060  0xc0000ae090  0xc0000ae098  0xc0000ae090
 }
+func Array_Test() {
+	num := []int{0, 1}
+	//无限循环
+	// for i := 0; i < len(num); i++ {
+	// 	num = append(num, i+1)
+	// }
+	//for range是先拷贝再操作！
+	for i := range num {
+		num = append(num, i+1)
+	}
+	fmt.Println(num)
+}
