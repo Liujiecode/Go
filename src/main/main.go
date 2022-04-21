@@ -14,6 +14,7 @@ func main() {
 	// for i := 0; i < len(num); i++ {
 	// 	num = append(num, i+1)
 	// }
+	//for range是先拷贝再操作！
 	for i := range num {
 		num = append(num, i+1)
 	}
