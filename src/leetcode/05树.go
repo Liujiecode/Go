@@ -25,4 +25,5 @@ func Tree_Solve() {
 
 	}
 	fmt.Println(stack)
+	fmt.Println(stack[0].Left, stack[0].Right)
 }

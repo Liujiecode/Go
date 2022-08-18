@@ -8,6 +8,7 @@ require (
 	go_learn v1.0.0
 	leetcode v1.0.0
 	tools v1.0.0
+	github.com/garyburd/redigo v1.6.3
 )
 replace go_learn => ../go_learn
 replace leetcode => ../leetcode

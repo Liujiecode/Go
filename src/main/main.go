@@ -2,23 +2,21 @@ package main
 
 import (
 	"fmt"
+	"go_learn"
 	"sort"
 )
 
 func main() {
-	// go_learn.Str_Test()
-	// leetcode.Tree_Solve()
-	// go_learn.Select_solve()
-	num := []int{0, 1}
-	//无限循环
-	// for i := 0; i < len(num); i++ {
-	// 	num = append(num, i+1)
-	// }
-	//for range是先拷贝再操作！
-	for i := range num {
-		num = append(num, i+1)
-	}
-	fmt.Println(num)
+	go_learn.Str_Test()
+	// // go_learn.Str_Test()
+	// // leetcode.Tree_Solve()
+	// leetcode.ListNode_Solve()
+	// test := [][]int{{1, 2}, {1, 1}, {2, 4}, {1, 5}}
+	// sort.Slice(test, func(a, b int) bool {
+	// 	return test[a][0] < test[b][0]
+	// })
+	// fmt.Println(test)
+	// // go_learn.Select_solve()
 
 }
 func topKFrequent(nums []int, k int) []int {
